@@ -1,0 +1,65 @@
+# GIN (Graph Isomorphism Network) configuration
+
+# Model architecture
+model:
+  name: "gin"
+  num_layers: 3
+  hidden_dim: 256
+  dropout: 0.2
+
+  # GIN-specific settings
+  gin:
+    eps: 0.0  # Initial epsilon value
+    train_eps: true  # Learn epsilon
+
+    # MLP settings for each GIN layer
+    mlp:
+      num_layers: 2
+      batch_norm: true
+
+  # Pooling
+  pooling: "add"  # "mean", "add", "max" - add is typical for GIN
+
+  # Output head
+  head:
+    hidden_dim: 128
+    dropout: 0.1
+    num_tasks: 12
+
+# Training settings
+training:
+  batch_size: 64
+  epochs: 100
+  learning_rate: 0.001
+  weight_decay: 0.0001
+
+  # Learning rate scheduler
+  scheduler:
+    type: "reduce_on_plateau"
+    factor: 0.5
+    patience: 10
+    min_lr: 0.00001
+
+  # Early stopping
+  early_stopping:
+    patience: 20
+    metric: "val_pr_auc"
+    mode: "max"
+
+  # Loss function
+  loss:
+    type: "masked_bce"
+    use_pos_weight: true
+
+# Data settings
+data:
+  num_workers: 0
+  pin_memory: false
+
+# Logging
+logging:
+  log_every_n_steps: 50
+  save_checkpoints: true
+
+# Random seed
+seed: 42

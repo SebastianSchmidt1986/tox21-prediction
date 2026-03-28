@@ -1,0 +1,41 @@
+# Baseline models configuration (Random Forest, XGBoost)
+
+# Data settings
+data:
+  fingerprint_radius: 2
+  fingerprint_bits: 2048
+
+# Random Forest configuration
+random_forest:
+  n_estimators: 500
+  max_depth: null  # None = unlimited
+  min_samples_split: 2
+  min_samples_leaf: 1
+  max_features: "sqrt"
+  class_weight: "balanced"
+  n_jobs: -1
+  random_state: 42
+
+# XGBoost configuration
+xgboost:
+  n_estimators: 500
+  max_depth: 6
+  learning_rate: 0.1
+  subsample: 0.8
+  colsample_bytree: 0.8
+  min_child_weight: 1
+  scale_pos_weight: null  # Set dynamically based on class imbalance
+  n_jobs: -1
+  random_state: 42
+  eval_metric: "auc"
+  early_stopping_rounds: 50
+
+# Training settings
+training:
+  # Per-task or multi-output
+  strategy: "per_task"  # "per_task" or "multi_output"
+
+# Evaluation settings
+evaluation:
+  threshold_tuning: true
+  threshold_metric: "f1"
